@@ -8,7 +8,7 @@ CartridgeStart:
 
 CartridgeEntry:
 	; Initialize hardware
-	lis		$0
+	lis		0
 	outs	1
 	outs	4
 	outs	5
@@ -20,16 +20,9 @@ CartridgeEntry:
     pi  BIOS_CLEAR_SCREEN
 
 main:
-	li  COLOR_BLUE  ; colour = blue
-    lr  1, A
-	li	40          ; X = 20
-	lr	2, A
-	li	40          ; Y = 20
-	lr	3, A
-	pi drawchar
-
+	drawchar_func COLOR_BLUE, 40, 40, 1
+	drawchar_func COLOR_RED, 48, 40, 0
     jmp main
-
 
 ;---------------;
 ; Char Function ;
@@ -49,14 +42,36 @@ charWidth: equ 8
 colour_r: equ 1
 coordX_r: equ 2
 coordY_r: equ 3
+ascii_r: equ 7
 columnCounter_r: equ 5
 rowCounter_r: equ 6
 temp_r: equ 4
+	MAC drawchar_func
+		li  {1}  ; colour = blue
+		lr  1, A
+		li	{2}  ; X = 20
+		lr	2, A
+		li	{3}  ; Y = 20
+		lr	3, A
+		li	{4}  ; char = sigma
+		lr	7, A
+		pi drawchar
+	ENDM
 drawchar: SUBROUTINE
 	li  charHeight
 	lr  rowCounter_r, A
-
-	DCI charSet
+     
+	; DC0 = charSet[8 * ascii_r]
+	lr A, ascii_r
+	dci charSet
+	adc
+	adc
+	adc
+	adc
+	adc
+	adc
+	adc
+	adc
 
 .drawRow:
 		li charWidth
@@ -106,40 +121,9 @@ drawchar: SUBROUTINE
 	; Return from the subroutine
 	pop
 
-asciiTooAddress:
-	; K = ascii * 8
-		; KL = ascii
-		; K << 3
-			; KL << 1
-			; KU += carry
-	; DC0 -> Q
-	; QL = KL + QL
-	; QU = KU + QU + carry
-	; DC0 <- Q
 
 
-; DC0 = charSet = 0xUU00
-; ascii = 0 to 127
-	; 011 11111 00000000
-	; 0AA BBBBB 00000000
-	; DC0 += BBBBB000
-	
-
-    ; assume A is the ascii char
-	; DC0 = charSet[8 * ascii]
-	; DCI charSet
-	; ADC
-	; ADC
-	; ADC
-	; ADC
-	; ADC
-	; ADC
-	; ADC
-	; ADC
-
-
-	ALIGN 256
-charSet: ; 0x??00
+charSet:
 	; Percentage
     db %00000001
     db %01100000
@@ -159,3 +143,8 @@ charSet: ; 0x??00
     db %00010000
     db %00100010
     db %00111110
+
+	ORG $2800
+testString: db "Tic Tac Toe", 0
+
+; special port to signal next/select/prev
