@@ -20,8 +20,8 @@ CartridgeEntry:
     pi  BIOS_CLEAR_SCREEN
 
 main:
-	drawchar_func COLOR_BLUE, 40, 40, 1
-	drawchar_func COLOR_RED, 48, 40, 0
+	drawchar_func COLOR_BLUE, 40, 40, $32
+	drawchar_func COLOR_RED, 48, 40, $45
     jmp main
 
 ;---------------;
@@ -38,7 +38,7 @@ main:
 ; r6 = row counter
 ;------------------------
 charHeight: equ 8
-charWidth: equ 8
+charWidth: equ 7
 colour_r: equ 1
 coordX_r: equ 2
 coordY_r: equ 3
@@ -61,9 +61,9 @@ drawchar: SUBROUTINE
 	li  charHeight
 	lr  rowCounter_r, A
      
-	; DC0 = charSet[8 * ascii_r]
+	; DC0 = bitmapFont[8 * ascii_r]
 	lr A, ascii_r
-	dci charSet
+	dci bitmapFont
 	adc
 	adc
 	adc
@@ -110,7 +110,7 @@ drawchar: SUBROUTINE
 		DS columnCounter_r
 		BNZ .checkBit
 	
-	li 8       ; R2 += 8
+	li charWidth       ; R2 += charWidth
 	as coordX_r
 	lr coordX_r, A
 
@@ -122,29 +122,10 @@ drawchar: SUBROUTINE
 	pop
 
 
-
-charSet:
-	; Percentage
-    db %00000001
-    db %01100000
-    db %10010100
-    db %01101000
-    db %00010110
-    db %00101001
-    db %00000110
-    db %10000000
-
-	; Sum
-    db %00000000
-    db %00111110
-    db %00100010
-    db %00010000
-    db %00001100
-    db %00010000
-    db %00100010
-    db %00111110
-
 	ORG $2800
-testString: db "Tic Tac Toe", 0
+testString: db 3, "Tic Tac Toe", 3, 0
+
+	ORG $3000
+	INCLUDE "font.h"
 
 ; special port to signal next/select/prev
