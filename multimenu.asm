@@ -20,8 +20,40 @@ CartridgeEntry:
     pi  BIOS_CLEAR_SCREEN
 
 main:
-	drawchar_func COLOR_BLUE, 40, 40, $32
-	drawchar_func COLOR_RED, 48, 40, $45
+	; drawchar_func COLOR_RED, 40, 40, $32
+	; drawchar_func COLOR_RED, 48, 40, $45
+	; drawchar_func COLOR_RED, 48, 30, $23 ;b1
+
+	li  $7a
+    lr  7, A
+
+loop9:
+	li  COLOR_RED
+    lr  1, A
+	li  40
+    lr  2, A
+	li  40
+    lr  3, A
+	; DS 7
+	
+	lr A, 7
+	ai 1
+	lr 7, A
+
+    pi  drawchar
+
+    li 255
+	lr 8, A
+.plotDelay323:
+	li	255
+.plotDelay32:
+	ai	$ff
+	bnz	.plotDelay32
+	DS 8
+	bnz	.plotDelay323
+
+	jmp loop9
+
     jmp main
 
 ;---------------;
@@ -64,7 +96,7 @@ drawchar: SUBROUTINE
 	; DC0 = bitmapFont[8 * ascii_r]
 	lr A, ascii_r
 	dci bitmapFont
-	adc
+	adc  ; add (signed) ascii_r
 	adc
 	adc
 	adc
@@ -75,13 +107,14 @@ drawchar: SUBROUTINE
 
 .drawRow:
 		li charWidth
+		inc
 		lr columnCounter_r, A
 		LM ; A = [DC0++]
 		LR temp_r, A
 
 .checkBit
 		CI $FF ; Check MSB set
-		BM .skipDraw
+		BM .blank_pixel
 			; PLOT PIXEL
 			lr	A, colour_r
 			outs	1
@@ -101,7 +134,29 @@ drawchar: SUBROUTINE
 			ai	$ff
 			bnz	.plotDelay2
 
-.skipDraw:
+			jmp .pixel_draw_done
+
+.blank_pixel:
+			; PLOT PIXEL
+			li	COLOR_BACKGROUND
+			outs	1
+			lr	A, coordX_r
+			com
+			outs	4
+			lr	A, coordY_r
+			com
+			outs	5
+			li		$60
+			outs	0
+			li		$50
+			outs	0
+
+			lis	6
+.plotDelay222:
+			ai	$ff
+			bnz	.plotDelay222
+
+.pixel_draw_done:
 		LR A, temp_r
 		SL 1
 		LR temp_r, A
@@ -111,6 +166,7 @@ drawchar: SUBROUTINE
 		BNZ .checkBit
 	
 	li charWidth       ; R2 += charWidth
+	inc
 	as coordX_r
 	lr coordX_r, A
 
