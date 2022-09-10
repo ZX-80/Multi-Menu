@@ -20,7 +20,20 @@ CartridgeEntry:
     pi  BIOS_CLEAR_SCREEN
 
 main:
-	; drawchar_func COLOR_RED, 40, 40, $32
+	 drawchar_func COLOR_BLUE, 12, 12, 17
+	 drawchar_func COLOR_BLUE, 19, 12, 'H
+	 drawchar_func COLOR_BLUE, 26, 12, 'E
+	 drawchar_func COLOR_BLUE, 33, 12, 'L
+	 drawchar_func COLOR_BLUE, 40, 12, 'l
+	 drawchar_func COLOR_BLUE, 47, 12, 'O 
+	 drawchar_func COLOR_BLUE, 54, 12, ' 
+	 drawchar_func COLOR_BLUE, 61, 12, ' 
+	 drawchar_func COLOR_BLUE, 68, 12, 't
+	 drawchar_func COLOR_BLUE, 75, 12, 'H
+	 drawchar_func COLOR_BLUE, 82, 12, 'e
+	 drawchar_func COLOR_BLUE, 89, 12, 'R
+	 drawchar_func COLOR_BLUE, 96, 12, 'E
+	 drawchar_func COLOR_BLUE, 103, 12, 16
 	; drawchar_func COLOR_RED, 48, 40, $45
 	; drawchar_func COLOR_RED, 48, 30, $23 ;b1
 
@@ -30,9 +43,9 @@ main:
 loop9:
 	li  COLOR_RED
     lr  1, A
-	li  40
+	li  58
     lr  2, A
-	li  40
+	li  28
     lr  3, A
 	; DS 7
 	
@@ -107,7 +120,6 @@ drawchar: SUBROUTINE
 
 .drawRow:
 		li charWidth
-		inc
 		lr columnCounter_r, A
 		LM ; A = [DC0++]
 		LR temp_r, A
@@ -166,7 +178,7 @@ drawchar: SUBROUTINE
 		BNZ .checkBit
 	
 	li charWidth       ; R2 += charWidth
-	inc
+	; inc
 	as coordX_r
 	lr coordX_r, A
 
