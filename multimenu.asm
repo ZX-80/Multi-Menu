@@ -213,6 +213,6 @@ drawchar: SUBROUTINE
 testString: db 3, "Tic Tac Toe", 3, 0
 
 	ORG $3000
-	INCLUDE "font.h"
+	INCLUDE "fonts/font.asm"
 
 ; special port to signal next/select/prev

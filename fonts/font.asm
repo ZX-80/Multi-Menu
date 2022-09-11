@@ -1,4 +1,6 @@
-; Based on Mx437 EverexME 5x8 (Regular)
+; Based on Mx437 EverexME 5x8 (no changes were made)
+; From the Ultimate Oldschool PC Font Pack
+; License: http://creativecommons.org/licenses/by-sa/4.0/
 ; Code page 437 compatible
     db $00,$30,$40,$30,$48,$08,$48,$30 ; 80 C Cedilla Capital (Ç)
     db $00,$50,$68,$48,$48,$48,$00,$48 ; 81 u Diaeresis Small (ü)
@@ -128,8 +130,8 @@
     db $00,$00,$00,$00,$38,$10,$20,$18 ; FD Two Superscript (²)
     db $00,$00,$00,$38,$38,$38,$00,$00 ; FE Solid Square/Histogram/Square Bullet (■)
     db $00,$00,$00,$00,$00,$00,$00,$00 ; FF Required Space ( )
-bitmapFont:                            ; Must be in the middle, as offsets are signed
-    db $00,$00,$00,$00,$00,$00,$00,$00 ;  0 Null ( )
+bitmapFont:                            ;    Must be in the middle, as offsets are signed
+    db $00,$00,$00,$00,$00,$00,$00,$00 ;  0 Null ( )
     db $00,$70,$A8,$F8,$88,$D8,$88,$70 ;  1 Smiling Face (☺)
     db $00,$70,$D8,$88,$F8,$A8,$F8,$70 ;  2 Smiling Face, Reverse Image (☻)
     db $00,$20,$70,$F8,$F8,$F8,$F8,$50 ;  3 Heart Suit Symbol (♥)
