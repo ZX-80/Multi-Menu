@@ -311,7 +311,7 @@ def draw_bitmap(font: ImageFont.FreeTypeFont, rows: int, columns: int) -> Image:
             pass
     bitmap = FakeBitmap()
     for row in range(rows):
-        text = ''.join(ibm437_to_unicode(chr(i + columns * row)) for i in range(columns))
+        text = "".join(ibm437_to_unicode(chr(i + columns * row)) for i in range(columns))
         mask, _ = font.getmask2(text, "L")
         bitmap.im = mask
         if row == 0:
@@ -332,25 +332,25 @@ def map_char_to_bytes(image: Image, font_width: int, font_height: int, columns: 
             char_map[chr(index)] = image.crop((x, y, x + font_width, y + font_height)).rotate(180).tobytes()
     return char_map
 
-def generate_font_file(font: ImageFont.FreeTypeFont, char_map: dict[str, bytes]) -> None:
+def generate_font_file(font: ImageFont.FreeTypeFont, char_map: dict[str, bytes], font_width: int, font_height: int) -> None:
     """Generate the font file to be imported in dasm"""
-    with open('font.asm', 'w', encoding='utf-8') as out_fp:
-        out_fp.write(f'; Based on {font.getname()[0]} (no changes were made)\n')
-        out_fp.write('; From the Ultimate Oldschool PC Font Pack\n')
-        out_fp.write('; License: http://creativecommons.org/licenses/by-sa/4.0/\n')
-        out_fp.write('; Code page 437 compatible\n')
-
+    with open("font.asm", "w", encoding="utf-8") as out_fp:
+        out_fp.write(f"; Based on {font.getname()[0]} (no changes were made)\n")
+        out_fp.write("; From the Ultimate Oldschool PC Font Pack\n")
+        out_fp.write("; License: http://creativecommons.org/licenses/by-sa/4.0/\n")
+        out_fp.write("; Code page 437 compatible\n")
+        out_fp.write(f"\nfont_width = {font_width}\nfont_height = {font_height}\n\n")
         for char_i in list(range(0x80, 0x100)) + list(range(0, 0x80)):
             if char_i == 0:
                 out_fp.write(f"bitmapFont:{'':28};    Must be in the middle, as offsets are signed\n")
-            out_fp.write('    db ' + ','.join(f'${data:02X}' for data in char_map[chr(char_i)])) # db $00,$00,$50,$A8,$A8,$50,$00,$00
+            out_fp.write("    db " + ",".join(f"${data:02X}" for data in char_map[chr(char_i)])) # db $00,$00,$50,$A8,$A8,$50,$00,$00
             out_fp.write(f" ; {char_i:2X} {ibm437_to_str[char_i]} ({ibm437_to_unicode(chr(char_i))})\n") # ; 21 Exclamation Point (!)
 
 if __name__ == "__main__":
-    font = ImageFont.truetype(FONT_NAME, FONT_SIZE, encoding='utf-8')
+    font = ImageFont.truetype(FONT_NAME, FONT_SIZE, encoding="utf-8")
     image = draw_bitmap(font, ROWS, COLUMNS)
     image.save(f"{FONT_NAME}.png")
     font_width, font_height = image.size[0]//COLUMNS, image.size[1]//ROWS
     char_map = map_char_to_bytes(image, font_width, font_height, COLUMNS)
-    generate_font_file(font, char_map)
+    generate_font_file(font, char_map, font_width, font_height)
     print(f"Font: {font.getname()[0]} [Actual {font_width}x{font_height}]", )

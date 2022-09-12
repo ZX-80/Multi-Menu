@@ -2,6 +2,10 @@
 ; From the Ultimate Oldschool PC Font Pack
 ; License: http://creativecommons.org/licenses/by-sa/4.0/
 ; Code page 437 compatible
+
+font_width = 5
+font_height = 8
+
     db $00,$30,$40,$30,$48,$08,$48,$30 ; 80 C Cedilla Capital (Ç)
     db $00,$50,$68,$48,$48,$48,$00,$48 ; 81 u Diaeresis Small (ü)
     db $00,$30,$08,$38,$48,$30,$00,$48 ; 82 e Acute Small (é)
