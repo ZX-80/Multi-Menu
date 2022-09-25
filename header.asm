@@ -54,7 +54,7 @@ R11 = 11
 ; JMP_{condition} -- jump to address if condition is true
 ; IN: address
 ; OUT: None
-; DESTROYS: None
+; DESTROYS: A
     MAC JMP_EQUAL         ; A == n (zero) [signed / unsigned]
         BNZ .no_jump
         JMP {1}
