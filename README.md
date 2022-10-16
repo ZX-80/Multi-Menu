@@ -11,8 +11,9 @@ The main navigation screen of the Flashcart-Pi for the Channel F.
   <img width="33%" src="https://user-images.githubusercontent.com/44975876/191892413-80af2ac4-c619-4bf3-8344-1c2e0a246e52.png">
 </p>
   
-[Protocol & Commands](#protocol--commands) •
-[Text Encoding](#text-encoding)
+[Navigating](#navigating-world_map) •
+[Protocol & Commands](#protocol--commands-mega) •
+[Text Encoding](#text-encoding-speech_balloon)
   
 </div>
 
