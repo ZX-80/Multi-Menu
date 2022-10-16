@@ -16,7 +16,17 @@ The main navigation screen of the Flashcart-Pi for the Channel F.
   
 </div>
 
-## Protocol & Commands
+## Navigating :world_map: 
+
+Navigation can be done with either controller, or the console buttons:
+
+| Action               | Controller | Button
+|----------------------|------------|-------
+|Previous file         | Right/Up   | 1
+|Next file             | Left/Down  | 2
+|Select file/directory | Press      | 3/4
+
+## Protocol & Commands :mega:
 The menu communicates with the Pico through port `$FF` and memory address `$2800`. It supports the following commands: 
 
 - Next `($1 -> Port $FF)` = Place the next filename (null terminated) in `$2802`. The filename can be up to 255 characters long
@@ -24,7 +34,7 @@ The menu communicates with the Pico through port `$FF` and memory address `$2800
 - Previous `($4 -> Port $FF)` = Place the previous filename (null terminated) in `$2802`. The filename can be up to 255 characters long
 - None `($8 -> Port $FF)` = Must be sent before another Next/Previous will register. This prevents the menu changing more than once per input
 	
-## Text Encoding
+## Text Encoding :speech_balloon:
 
 <p align = "center">
   <img width="80%" src="https://user-images.githubusercontent.com/44975876/191890960-b8cc494c-5bce-481d-8825-5e7a8c0c16a6.png">
