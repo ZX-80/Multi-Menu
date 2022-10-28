@@ -2,7 +2,7 @@
 
 # Multi-Menu
 
-![badge](https://badgen.net/badge/version/v0.2.1/orange?style=flat-square)
+![badge](https://badgen.net/badge/version/v0.2.2/orange?style=flat-square)
 ![badge](https://badgen.net/badge/platform/F8/green?style=flat-square)
 
 The main navigation screen of the Flashcart-Pi for the Channel F. 
@@ -42,3 +42,13 @@ The menu communicates with the Pico through port `$FF` and memory address `$2800
 </p>
 
 The menu currently supports [code page 437](https://en.wikipedia.org/wiki/Code_page_437), not UTF-8. This can cause unexpected encoding errors for non-ascii characters, depending on your operating system. I may change this in future, so only rely on the ASCII subset for now.
+
+\* *Note: if using the Pico firmware, it automatically translates UTF-8 to CP437 before passing strings to the menu*
+
+# Building
+
+This assembly program can be built using DASM with the following command:
+
+```bash
+dasm multimenu.asm -f3 -oboot.bin
+```

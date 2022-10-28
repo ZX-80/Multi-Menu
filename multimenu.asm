@@ -19,6 +19,8 @@ cartridge_entry:
     LR  R3, A
     PI  BIOS_CLEAR_SCREEN 
 
+    EI            ; Enable interrupts
+
 ; ==================================================================
 ; Main Program Loop
 ; ==================================================================
@@ -40,7 +42,7 @@ main:
 ; Constants
 ; ==================================================================
 
-banner: db 17, " MultiMenu 0.2.1", 16, 0
+banner: db 17, " MultiMenu 0.2.2", 16, 0
 egg_text: db "<:3)", $1D, $1D, " ", 0
 ; egg_text: db "<<By 3DMAZE>> ", 0
     INCLUDE "fonts/font.asm"
